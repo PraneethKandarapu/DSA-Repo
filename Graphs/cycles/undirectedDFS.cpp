@@ -2,30 +2,19 @@
 using namespace std;
 
 bool detectCycle(int V, vector<vector<int>> &adj);
-bool bfs(int u, vector<vector<int>> &adj, vector<bool> &visited);
+bool dfs(int u, vector<vector<int>> &adj, vector<bool> &visited, int parent);
 
-bool bfs(int u, vector<vector<int>> &adj, vector<bool> &visited)
+bool dfs(int u, vector<vector<int>> &adj, vector<bool> &visited, int parent)
 {
-    queue<pair<int, int>> q;
-    q.push({u, -1});
-
-    while (!q.empty())
+    visited[u] = true;
+    for (int v : adj[u])
     {
-        pair<int, int> p = q.front();
-        q.pop();
-        int source = p.first;
-        int parent = p.second;
-
-        for (int v : adj[source])
-        {
-            if (!visited[v])
-            {
-                visited[v] = true;
-                q.push({v, source});
-            }
-            else if (parent != v)
-                return true;
-        }
+        if (v == parent)
+            continue;
+        if (visited[v])
+            return true;
+        if (dfs(v, adj, visited, u)) // u is the parent
+            return true;
     }
     return false;
 }
@@ -36,7 +25,7 @@ bool detectCycle(int V, vector<vector<int>> &adj)
 
     for (int i = 0; i < V; i++)
     {
-        if (!visited[i] && bfs(i, adj, visited))
+        if (!visited[i] && dfs(i, adj, visited, -1))
             return true;
     }
     return false;
