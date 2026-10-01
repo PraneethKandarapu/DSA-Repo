@@ -14,7 +14,7 @@ bool isCycleDFS(int u, vector<vector<int>> &adj, vector<bool> &visited, vector<b
     {
         if (!visited[v] && isCycleDFS(v, adj, visited, inRec))
             return true;
-        if (inRec[v] == true)
+        else if (inRec[v] == true)
             return true;
     }
     inRec[u] = false;
