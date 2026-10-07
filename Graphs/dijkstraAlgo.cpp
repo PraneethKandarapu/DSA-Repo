@@ -29,6 +29,7 @@ vector<int> dijkstrasAlgo(int v, vector<vector<int>> &edges, int src)
 
     while (!pq.empty())
     {
+        // extract the cost and node of the top element of queue
         int d = pq.top().first;
         int node = pq.top().second;
 
@@ -36,12 +37,13 @@ vector<int> dijkstrasAlgo(int v, vector<vector<int>> &edges, int src)
         pq.pop();
         for (auto &it : adj[node])
         {
-            int adjNode = it.first;
-            int wt = it.second;
-            if (d + wt < res[adjNode])
+            // find the adjacent node of recently popped node
+            int adjNode = it.first;    // node
+            int wt = it.second;        // its weight from the popped node
+            if (d + wt < res[adjNode]) // if the added cost is less than the previous cost in res array
             {
-                res[adjNode] = d + wt;
-                pq.push({res[adjNode], adjNode});
+                res[adjNode] = d + wt;            // swap
+                pq.push({res[adjNode], adjNode}); // push
             }
         }
     }
